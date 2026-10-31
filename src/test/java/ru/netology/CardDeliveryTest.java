@@ -29,9 +29,10 @@ public class CardDeliveryTest {
         String firstDate = DataGenerator.generateDate(4);
         String secondDate = DataGenerator.generateDate(7);
 
+        // Открываем страницу заказа доставки карты
         open("/");
 
-        // Заполняем форму впервые
+        // Заполняем форму первый раз
         $("[data-test-id='city'] input")
                 .setValue(client.getCity());
 
@@ -46,32 +47,37 @@ public class CardDeliveryTest {
         $("[data-test-id='agreement'] .checkbox__box")
                 .click();
 
-        // Первое бронирование
+        // Первое бронирование встречи
         $(byText("Запланировать")).click();
 
+        // Проверяем полное сообщение с первой датой
         $("[data-test-id='success-notification'] .notification__content")
                 .shouldBe(visible, Duration.ofSeconds(15))
-                .shouldHave(text(firstDate));
+                .shouldHave(exactText(
+                        "Встреча успешно запланирована на " + firstDate
+                ));
 
-        // Меняем только дату, остальные данные оставляем прежними
+        // Изменяем только дату встречи
         setDate(secondDate);
 
+        // Повторно отправляем форму
         $(byText("Запланировать")).click();
 
-        // Подтверждаем перепланирование
+        // Подтверждаем изменение даты
         $(byText("Перепланировать"))
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .click();
 
-        // Проверяем успешное перепланирование
+        // Проверяем полное сообщение с новой датой
         $("[data-test-id='success-notification'] .notification__content")
                 .shouldBe(visible, Duration.ofSeconds(15))
-                .shouldHave(text(secondDate));
+                .shouldHave(exactText(
+                        "Встреча успешно запланирована на " + secondDate
+                ));
     }
 
+    // Вспомогательный метод для изменения даты
     private void setDate(String date) {
-
-        $("[data-test-id='date'] input").click();
 
         $("[data-test-id='date'] input")
                 .sendKeys(Keys.chord(Keys.CONTROL, "a"));
@@ -81,8 +87,5 @@ public class CardDeliveryTest {
 
         $("[data-test-id='date'] input")
                 .sendKeys(date);
-
-        $("[data-test-id='date'] input")
-                .shouldHave(value(date));
     }
 }

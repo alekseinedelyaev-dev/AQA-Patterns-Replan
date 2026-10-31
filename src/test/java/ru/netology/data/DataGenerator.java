@@ -31,25 +31,18 @@ public class DataGenerator {
         return cities[random.nextInt(cities.length)];
     }
 
-    // Генерация фамилии и имени
+    // Генерация фамилии и имени с помощью Faker
     public static String generateName() {
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
 
-        return (lastName + " " + firstName)
-                .replace('ё', 'е')
-                .replace('Ё', 'Е');
+        return lastName + " " + firstName;
     }
 
-    // Генерация телефона в формате +7XXXXXXXXXX
+    // Генерация телефона с помощью Faker
+    // Формат: +7 и 10 случайных цифр
     public static String generatePhone() {
-        StringBuilder phone = new StringBuilder("+7");
-
-        for (int i = 0; i < 10; i++) {
-            phone.append(random.nextInt(10));
-        }
-
-        return phone.toString();
+        return faker.numerify("+7##########");
     }
 
     // Генерация даты относительно текущего дня
