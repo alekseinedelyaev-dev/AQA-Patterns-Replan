@@ -1,6 +1,7 @@
 
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '4.3.0'
 }
 
 group 'ru.netology'
@@ -10,8 +11,8 @@ java {
     sourceCompatibility = 11
 }
 
-compileJava.options.encoding = "UTF-8"
-compileTestJava.options.encoding = "UTF-8"
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
@@ -25,12 +26,20 @@ dependencies {
     // Selenide
     testImplementation 'com.codeborne:selenide:6.19.1'
 
-    // Faker - генерация тестовых данных
+    // Faker
     testImplementation 'com.github.javafaker:javafaker:1.0.2'
 
-    // Lombok - сокращение кода data-классов
+    // Lombok
     testCompileOnly 'org.projectlombok:lombok:1.18.36'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+    // Allure для JUnit 5 и Selenide
+    testImplementation 'io.qameta.allure:allure-junit5:2.35.5'
+    testImplementation 'io.qameta.allure:allure-selenide:2.35.5'
+}
+
+allure {
+    version = '2.42.1'
 }
 
 test {
